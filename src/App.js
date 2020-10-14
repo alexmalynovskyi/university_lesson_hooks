@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -44,7 +44,7 @@ function App() {
   const [custArr, setCustArr] = useState(initialValueObjs);
   const [inputVal, setInputVal] = useState('');
 
-  const renderArray = () => {
+  const renderArray = useMemo(() => {
     if (Array.isArray(custArr) && custArr.length > 0) {
       return <ul>{custArr.map((item, index) => (
         <CustomListItem key={item.key} index={item.key} value={item.value} />
@@ -52,7 +52,7 @@ function App() {
     } else {
       return ;
     }
-  }
+  }, [custArr]);
 
   const handleChange = (event) => {
     const { target } = event;
@@ -74,7 +74,7 @@ function App() {
       <br/>
       <input val={inputVal} onChange={handleChange} />
       <button onClick={handleClick}> click to add </button>
-      {renderArray()}
+      {renderArray}
     </div>
   );
 }
