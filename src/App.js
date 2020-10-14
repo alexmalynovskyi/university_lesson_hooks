@@ -11,65 +11,70 @@ const initialState = {
   score: 0
 };
 
-const reducer = (state, payload) => {
-  console.log('state: ', state);
-  console.log('payload: ', payload);
-  switch(payload.type) {
-    case INCREMENT:
-      return { ...state, count: state.count + 1 };
-    case DECREMENT:
-      return { ...state, count: state.count - 1 };
-    case RESET:
-      return { ...state ,count: 0 };
-    default:
-      return state;
+const initialValue = [1, 2, 3, 4];
+
+const initialValueObjs = [
+  {
+    key: Math.random(),
+    value: 1
+  }, 
+  {
+    key: Math.random(),
+    value: 2
+  },
+  {
+    key: Math.random(),
+    value: 3
   }
+]
+
+function CustomListItem({ value, index }) {
+
+  useEffect(() => {
+    //
+  }, [])
+
+  console.log(`Rerender custom list item with value ${value} and key : ${index}`);
+  return (
+    <li key={index}>{value}</li>
+  )
 }
 
 function App() {
-  // const [counter, setCounter] = useState({
-  //   counter: 0
-  // });
-  const [counter1, setCounter1] = useState(0);
-  const [counter, dispatch] = useReducer(reducer,  initialState); // under the hood -> useState
+  const [custArr, setCustArr] = useState(initialValueObjs);
+  const [inputVal, setInputVal] = useState('');
 
-  useEffect(() => {
-    console.log('enter useEffect');
-    const interval = setInterval(() => {
-      console.log('setInteval');
-    }, 1000 * 2)
-
-    clearInterval(interval);
-    
-    const cleanUp = () => {
-      clearInterval(interval);
+  const renderArray = () => {
+    if (Array.isArray(custArr) && custArr.length > 0) {
+      return <ul>{custArr.map((item, index) => (
+        <CustomListItem key={item.key} index={item.key} value={item.value} />
+      ))}</ul>
+    } else {
+      return ;
     }
-    return cleanUp;
-  }, [counter])
-  
-  // const handleClick = (type) => {
-  //   if (type === 'increment') {
-  //     setCounter((prevCounter) => ({ counter: prevCounter.counter + 1 }));
-  //   } else if (type === 'decrement') {
-  //     setCounter((prevCounter) => ({ counter: prevCounter.counter - 1 }));
-  //   }
-  // }
+  }
 
+  const handleChange = (event) => {
+    const { target } = event;
+    const { value } = event.target;
+
+    console.log(target);
+    setInputVal(value);
+  }
+
+  const handleClick = (event) => {
+    const { target } = event;
+
+    console.log(target);
+    setCustArr((prevArr) => prevArr.concat({ value: inputVal, key: Math.random() }));
+  }
   return (
     <div className="App">
-      <button onClick={() => dispatch({ type: INCREMENT })}>
-        click to increment value
-      </button>
+    
       <br/>
-      <button onClick={() => dispatch({ type: DECREMENT })}>
-        click to decrement value
-      </button> 
-      <br/>
-      <button onClick={() => dispatch({ type: RESET })}>
-        click to reset value
-      </button> 
-      <br/>
-      value is {counter.count}
+      <input val={inputVal} onChange={handleChange} />
+      <button onClick={handleClick}> click to add </button>
+      {renderArray()}
     </div>
   );
 }
