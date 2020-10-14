@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React, { useState, useEffect, useReducer, useMemo, useContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const INCREMENT = 'increment';
-const DECREMENT = 'decrement';
-const RESET = 'reset';
-
-const initialState = {
-  count: 0,
-  score: 0
+const themes = {
+  light: {
+    foreground: "#000000",
+    background: "#eeeeee"
+  },
+  dark: {
+    foreground: "#ffffff",
+    background: "#222222"
+  }
 };
 
-const initialValue = [1, 2, 3, 4];
+const ThemeContext = React.createContext(themes.light);
 
 const initialValueObjs = [
   {
@@ -41,41 +43,34 @@ function CustomListItem({ value, index }) {
 }
 
 function App() {
-  const [custArr, setCustArr] = useState(initialValueObjs);
-  const [inputVal, setInputVal] = useState('');
-
-  const renderArray = useMemo(() => {
-    if (Array.isArray(custArr) && custArr.length > 0) {
-      return <ul>{custArr.map((item, index) => (
-        <CustomListItem key={item.key} index={item.key} value={item.value} />
-      ))}</ul>
-    } else {
-      return ;
-    }
-  }, [custArr]);
-
-  const handleChange = (event) => {
-    const { target } = event;
-    const { value } = event.target;
-
-    console.log(target);
-    setInputVal(value);
-  }
-
-  const handleClick = (event) => {
-    const { target } = event;
-
-    console.log(target);
-    setCustArr((prevArr) => prevArr.concat({ value: inputVal, key: Math.random() }));
-  }
   return (
-    <div className="App">
-    
-      <br/>
-      <input val={inputVal} onChange={handleChange} />
-      <button onClick={handleClick}> click to add </button>
-      {renderArray}
+    <ThemeContext.Provider value={themes.dark}>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar(props) {
+  return (
+    <div>
+      <ThemedButton />
     </div>
+  );
+}
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return (
+    <button style={{ background: theme.background, color: theme.foreground }}>
+      I am styled by theme context!
+    </button>
+  //   <ThemeContext.Consumer>
+  //   { value => 
+  //     <button style={{ background: value.background, color: value.foreground }}>
+  //       I am styled by theme context!
+  //     </button>
+  //   }
+  // </ThemeContext.Consumer>
   );
 }
 
