@@ -4,15 +4,16 @@ import './App.css';
 
 function App() {
   const [counter, setCounter] = useState(0);
-  const [counter1, setCounter1] = useState(0);
+
+  useEffect(() => {
+    console.log('enter first useEffect');
+  }, [])
 
   useEffect(() => {
     console.log('enter useEffect');
     const interval = setInterval(() => {
       console.log('setInteval');
     }, 1000 * 2)
-
-    
     
     const cleanUp = () => {
       clearInterval(interval);
@@ -33,11 +34,11 @@ function App() {
       <button onClick={() => handleClick('increment')}>
         click to increment value
       </button>
-      
+      <br/>
       <button onClick={() => handleClick('decrement')}>
         click to decrement value
       </button> 
-
+      <br/>
       value is {counter}
     </div>
   );
