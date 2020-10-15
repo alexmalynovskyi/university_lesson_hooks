@@ -18,11 +18,11 @@ function App() {
       <button onClick={() => handleClick('increment')}>
         click to increment value
       </button> 
-
+      <br/>
       <button onClick={() => handleClick('decrement')}>
         click to decrement value
       </button> 
-
+      <br/>
       value is {counter}
     </div>
   );
