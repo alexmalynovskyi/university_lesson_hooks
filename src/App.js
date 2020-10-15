@@ -27,33 +27,7 @@ const reducer = (state, payload) => {
 }
 
 function App() {
-  // const [counter, setCounter] = useState({
-  //   counter: 0
-  // });
-  const [counter1, setCounter1] = useState(0);
   const [counter, dispatch] = useReducer(reducer,  initialState); // under the hood -> useState
-
-  useEffect(() => {
-    console.log('enter useEffect');
-    const interval = setInterval(() => {
-      console.log('setInteval');
-    }, 1000 * 2)
-
-    clearInterval(interval);
-    
-    const cleanUp = () => {
-      clearInterval(interval);
-    }
-    return cleanUp;
-  }, [counter])
-  
-  // const handleClick = (type) => {
-  //   if (type === 'increment') {
-  //     setCounter((prevCounter) => ({ counter: prevCounter.counter + 1 }));
-  //   } else if (type === 'decrement') {
-  //     setCounter((prevCounter) => ({ counter: prevCounter.counter - 1 }));
-  //   }
-  // }
 
   return (
     <div className="App">
